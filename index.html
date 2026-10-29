@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0a1f" />
+<title>DINOVERSE — Your Dino. Your World. Your Adventure.</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="cvs"></canvas>
+
+    <!-- ================= HUD ================= -->
+    <div id="hud" class="hidden">
+      <div class="hud-left">
+        <div class="chip score-chip"><span class="lbl">SCORE</span><b id="hudScore">0</b></div>
+        <div class="chip"><span class="lbl">BEST</span><b id="hudBest">0</b></div>
+        <div class="chip crystal-chip"><i class="gem"></i><b id="hudGems">0</b></div>
+        <button class="chip world-chip" id="hudWorld" title="Click or press 1-6 to change world">JUNGLE PARADISE ⇄</button>
+        <div class="fly-bar" id="flyBar" title="Flight energy — hold JUMP in the air to fly">
+          <span class="fly-fill" id="flyFill"></span><span class="fly-lbl">FLY</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <button class="icon-btn" id="btnSound" aria-label="Toggle sound">
+          <span id="soundIcon">◼◣</span>
+        </button>
+        <button class="icon-btn" id="btnPause" aria-label="Pause">❚❚</button>
+      </div>
+      <div class="meter"><div class="meter-fill" id="meterFill"></div><span id="meterTxt">STAGE 1 · 0 m</span></div>
+      <div class="shield-badge hidden" id="shieldBadge">SHIELD <b id="shieldTime">0.0</b>s</div>
+    </div>
+
+    <!-- ================= TOUCH CONTROLS ================= -->
+    <div id="touch" class="hidden">
+      <button class="tbtn duck" id="btnDuck">DUCK</button>
+      <button class="tbtn jump" id="btnJump">JUMP<small>hold to fly</small></button>
+    </div>
+
+    <!-- ================= MENU ================= -->
+    <section class="overlay show" id="scMenu">
+      <div class="menu-wrap">
+        <div class="brand">
+          <h1 class="logo">DINO<span>VERSE</span></h1>
+          <p class="tag">YOUR DINO · YOUR WORLD · YOUR ADVENTURE</p>
+        </div>
+        <div class="menu-stats">
+          <div class="stat"><span>BEST</span><b id="menuBest">0</b></div>
+          <div class="stat"><span>CRYSTALS</span><b id="menuGems">0</b></div>
+          <div class="stat"><span>WORLD</span><b id="menuWorld">JUNGLE</b></div>
+        </div>
+        <div class="menu-btns">
+          <button class="btn primary big" id="btnStart">START ADVENTURE</button>
+          <div class="btn-row">
+            <button class="btn ghost" id="btnLab">🧪 DINO LAB</button>
+            <button class="btn ghost" id="btnStudio">🌍 WORLD STUDIO</button>
+          </div>
+          <button class="btn link" id="btnSound2">SOUND: <b id="soundWord">ON</b></button>
+        </div>
+        <p class="hint"><kbd>SPACE</kbd>/<kbd>↑</kbd> jump — <b>hold to FLY</b> · <kbd>↓</kbd> duck · <kbd>1</kbd>–<kbd>6</kbd> change world · <kbd>P</kbd> pause · <kbd>R</kbd> restart</p>
+      </div>
+    </section>
+
+    <!-- ================= DINO LAB ================= -->
+    <section class="overlay panel-right" id="scLab">
+      <div class="panel">
+        <header class="panel-head">
+          <h2>DINO LAB</h2>
+          <p>Paint your dino. Changes apply instantly.</p>
+        </header>
+        <h3 class="sub">BODY SKIN</h3>
+        <div class="swatches" id="swatches"></div>
+        <h3 class="sub">ACCESSORY</h3>
+        <div class="pills" id="accPills"></div>
+        <div class="panel-foot">
+          <button class="btn ghost sm" id="btnRandom">🎲 RANDOMIZE</button>
+          <button class="btn primary sm" id="btnLabBack">DONE</button>
+        </div>
+        <p class="unlock-note" id="unlockNote"></p>
+      </div>
+    </section>
+
+    <!-- ================= WORLD STUDIO ================= -->
+    <section class="overlay panel-full" id="scStudio">
+      <div class="panel wide">
+        <header class="panel-head">
+          <h2>WORLD STUDIO</h2>
+          <p>Pick a world — the whole environment changes.</p>
+        </header>
+        <div class="worlds" id="worldGrid"></div>
+        <div class="panel-foot">
+          <button class="btn primary sm" id="btnStudioBack">DONE</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAUSE ================= -->
+    <section class="overlay center" id="scPause">
+      <div class="card">
+        <h2 class="card-title">PAUSED</h2>
+        <div class="card-btns">
+          <button class="btn primary" id="btnResume">RESUME</button>
+          <button class="btn ghost" id="btnRestart">RESTART</button>
+          <button class="btn link" id="btnQuit">MAIN MENU</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= GAME OVER ================= -->
+    <section class="overlay center" id="scOver">
+      <div class="card">
+        <h2 class="card-title danger" id="overTitle">EXTINCTION!</h2>
+        <p class="newbest hidden" id="newBest">★ NEW BEST SCORE ★</p>
+        <div class="results">
+          <div class="res"><span>SCORE</span><b id="overScore">0</b></div>
+          <div class="res"><span>BEST</span><b id="overBest">0</b></div>
+          <div class="res"><span>CRYSTALS</span><b id="overGems">0</b></div>
+          <div class="res"><span>DISTANCE</span><b id="overDist">0 m</b></div>
+        </div>
+        <div class="card-btns">
+          <button class="btn primary big" id="btnAgain">PLAY AGAIN</button>
+          <button class="btn link" id="btnMenu">MAIN MENU</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

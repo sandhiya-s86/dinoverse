@@ -1,0 +1,9 @@
+# Playwright verification captures — regenerate locally, not part of the game
+shots/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
